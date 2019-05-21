@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de custos de transporte</title>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('button').on('click', function(){
+                $kmPavimentada = $('input#km_pavimentada').val();
+                $kmNaoPavimentada = $('input#km_nao_pavimentada').val();
+                $tipoVeiculo = $('option:selected').val();
+                $pesoCarga = $('input#peso_carga').val();
+
+                url = "http://localhost:8080/calcular?km_pavimentada="+$kmPavimentada+"&km_nao_pavimentada="+$kmNaoPavimentada+"&tipo_caminhao="+$tipoVeiculo+"&peso_carga="+ $pesoCarga;
+                
+                $.getJSON( url, function( data ) {
+                    $('.result').text(data.custoTotal);
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col m10 offset-m1 s12">
+                <h2 class="center-align">Calcular custos</h2>
+                <div class="row">
+                    <form id="form_custos" class="col s12">
+                        <div class="row">
+                            <div class="input-field col m6 s12">
+                                <input id="km_pavimentada" type="text" class="validate" value="0">
+                                <label for="km_pavimentada">Distância em Rodovia Pavimentada</label>
+                            </div>
+                            <div class="input-field col m6 s12">
+                                <input id="km_nao_pavimentada" type="text" class="validate" value="0">
+                                <label for="km_nao_pavimentada">Distância em Rodovia N&atilde;o Pavimentada</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col m6 s12">
+                                <input id="peso_carga" type="text" class="validate" value="0" required>
+                                <label for="peso_carga">Peso da Carga</label>
+                            </div>
+                            <div class="input-field col m6 s12">
+                                <label for="budget">Ve&iacute;culo utilizado</label>
+                                <br />
+                            </div>
+                            <div class="input-field col m6 s12">
+                                <select class="browser-default" id="budget">
+                                    <option value="" selected disabled>Selecione uma op&ccedil;&atilde;o</option>
+                                    <option value="BAU">Ba&uacute;</option>
+                                    <option value="CACAMBA">Ca&ccedil;amba</option>
+                                    <option value="CARRETA">Carreta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h3>Custo Total: <span class="result">0.00</span></h3>
+                        </div>
+                        <div class="row">
+                            <div class="col m12">
+                                <p class="right-align"><button class="btn btn-large waves-effect waves-light" type="button"
+                                        name="action">Calcular</button></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
