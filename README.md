@@ -1,4 +1,4 @@
-#
+# Estudo do uso de SpringBoot em projetos
 
 ### O projeto está divido em Backend e Frontend, ambas partes trabalhando de forma isolada.
 
@@ -47,6 +47,6 @@ Instalação via npm:
 
 Entre no diretório que se encontra arquivo e inicie o http-server
 
-http-server -p 8000`
+`http-server -p 8000`
 
 Com o Node instalado. É preciso instalar o http-server para rodar o frontend.
