@@ -1,0 +1,27 @@
+version: "3.5"
+
+services:
+  siegen_app:
+    container_name: siegen_app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
+    ports:
+      - "8081:8080"
+    networks:
+      - mynetwork
+
+  siegen_api:
+    container_name: siegen_api
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+  
