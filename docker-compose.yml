@@ -1,9 +1,10 @@
-version: "2"
+version: "3.5"
 
 services:
-  siegen:
-    container_name: siegen
+  siegen_api:
+    container_name: siegen_api
     build: 
       context: .
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
