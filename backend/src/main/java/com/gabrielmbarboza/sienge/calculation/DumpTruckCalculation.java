@@ -1,13 +1,16 @@
 package com.gabrielmbarboza.sienge.calculation;
 
-import com.gabrielmbarboza.sienge.exception.NegativeKmException;
 import com.gabrielmbarboza.sienge.rules.TruckCalculation;
 
 public class DumpTruckCalculation implements TruckCalculation {
-    private final Double fmc = 1.05;
+    private final Double fmc = 1.05d;
 
     @Override
-    public Double calculateCost(Double cost) throws NegativeKmException {
+    public Double calculateCost(Double cost) {
+        if (cost < 0d) {
+            return 0d;
+        }
+
         return cost * fmc;
     }
 }
