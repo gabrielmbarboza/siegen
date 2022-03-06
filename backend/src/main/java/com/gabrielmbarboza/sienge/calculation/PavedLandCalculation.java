@@ -6,48 +6,46 @@ import com.gabrielmbarboza.sienge.model.Vehicle;
 import com.gabrielmbarboza.sienge.rules.TransportCalculation;
 
 public class PavedLandCalculation implements TransportCalculation {
-    private final int cargoWeightLimit = 5;
-    private final Double kmTraveledCost = 0.54;
-    private final Double excessWeightCost = 0.02;
+    private final Double cargoWeightLimit = 5.0d;
+    private final Double kmTraveledCost = 0.54d;
+    private final Double excessWeightCost = 0.02d;
 
-    public Double calculateTotalCost(Vehicle vehicle, int kmTraveled, int cargoWeight) {
+    public Double calculateTotalCost(Vehicle vehicle, Double kmTraveled, Double cargoWeight) {
         Double totalCost = 0.0d;
 
-        try {
-            Double costKmTraveled = calculateCostKmTraveled(kmTraveled);
-            totalCost = vehicle.calculateTotalCost(costKmTraveled);
+        Double costKmTraveled = calculateCostKmTraveled(kmTraveled);
+        totalCost = vehicle.calculateTotalCost(costKmTraveled);
 
-            if (cargoWeight < 0)
-                totalCost = 0.0d;
+        if (cargoWeight < 0) {
+            throw new NegativeWeightCargoException();
+        }
 
-            if (isExcessWeight(cargoWeight)) {
-                totalCost += (calculateExcessWeight(kmTraveled, cargoWeight));
-            }
-
-        } catch (NegativeWeightCargoException | NegativeKmException e) {
-            System.out.println(e.getMessage());
+        if (isExcessWeight(cargoWeight)) {
+            totalCost += (calculateExcessWeight(kmTraveled, cargoWeight));
         }
 
         return totalCost;
     }
 
-    public Double calculateCostKmTraveled(int kmTraveled) throws NegativeKmException {
+    public Double calculateCostKmTraveled(Double kmTraveled) {
         Double totalKmTraveledCost = 0.0d;
 
-        if (kmTraveled < 0)
+        if (kmTraveled < 0) {
             throw new NegativeKmException();
+        }
 
         totalKmTraveledCost = kmTraveledCost * kmTraveled;
 
         return totalKmTraveledCost;
     }
 
-    public Double calculateExcessWeight(int kmTraveled, int cargoWeight) throws NegativeWeightCargoException {
-        int excessWeight = 0;
+    public Double calculateExcessWeight(Double kmTraveled, Double cargoWeight) {
+        Double excessWeight = 0.0d;
         Double totalExcessWeightCost = 0.0d;
 
-        if (cargoWeight < 0)
+        if (cargoWeight < 0) {
             throw new NegativeWeightCargoException();
+        }
 
         if (cargoWeight > cargoWeightLimit) {
             excessWeight = cargoWeight - cargoWeightLimit;
@@ -57,7 +55,7 @@ public class PavedLandCalculation implements TransportCalculation {
         return totalExcessWeightCost;
     }
 
-    public Boolean isExcessWeight(int cargoWeight) {
+    public Boolean isExcessWeight(Double cargoWeight) {
         return cargoWeight > cargoWeightLimit ? true : false;
     }
 }
