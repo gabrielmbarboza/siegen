@@ -39,7 +39,8 @@
 
 ### Running with the siegen web app
 
-`git submodule init && git submodule update`  
+`git submodule init && git submodule update`
+
 `docker-compose up`
 
 > 0.0.0.0:8081
