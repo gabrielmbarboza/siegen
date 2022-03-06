@@ -2,16 +2,16 @@ package com.gabrielmbarboza.sienge.dto;
 
 public class TransportTotalCost {
     private String vehicle;
-    private int kmByPavedLand = 0;
-    private int kmByUnpavedLand = 0;
-    private int weightCargo = 0;
+    private Double pavedLandCost = 0.0d;
+    private Double unpavedLandCost = 0.0d;
+    private Double weightCargo = 0.0d;
     private Double totalCost = 0.0d;
 
-    public TransportTotalCost(String vehicle, int kmByPavedLand,
-            int kmByUnpavedLand, int weightCargo, Double totalCost) {
+    public TransportTotalCost(String vehicle, Double pavedLandCost,
+            Double unpavedLandCost, Double weightCargo, Double totalCost) {
         this.vehicle = vehicle;
-        this.kmByPavedLand = kmByPavedLand;
-        this.kmByUnpavedLand = kmByUnpavedLand;
+        this.pavedLandCost = pavedLandCost;
+        this.unpavedLandCost = unpavedLandCost;
         this.weightCargo = weightCargo;
         this.totalCost = totalCost;
     }
@@ -20,19 +20,19 @@ public class TransportTotalCost {
         return this.vehicle;
     }
 
-    public int getKmByPavedLand() {
-        return kmByPavedLand;
+    public String getPavedLandCost() {
+        return String.format("%.2f", this.pavedLandCost);
     }
 
-    public int getKmByUnpavedLand() {
-        return this.kmByUnpavedLand;
+    public String getUnpavedLandCost() {
+        return String.format("%.2f", this.unpavedLandCost);
     }
 
     public String getTotalCost() {
         return String.format("%.2f", this.totalCost);
     }
 
-    public int getWeightCargo() {
-        return this.weightCargo;
+    public String getWeightCargo() {
+        return String.format("%.2f", this.weightCargo);
     }
 }
