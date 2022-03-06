@@ -1,204 +1,261 @@
 package com.gabrielmbarboza.sienge.service;
 
 import com.gabrielmbarboza.sienge.dto.TransportTotalCost;
+import com.gabrielmbarboza.sienge.exception.NegativeKmException;
+import com.gabrielmbarboza.sienge.exception.NegativeWeightCargoException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class CostCalculationServiceTest {
+  private Double kmByPavedLand = 100d;
+  private Double kmByPavedLandZero = 0d;
+  private Double kmByPavedLandNegative = -100d;
+  private Double kmByUnpavedLand = 100d;
+  private Double kmByUnpavedLandZero = 0d;
+  private Double kmByUnpavedLandNegative = -100d;
+  private Double weightCargo = 8d;
+  private Double weightCargoZero = 0d;
+  private Double weightCargoNegative = -8d;
 
   @Autowired
   CostCalculationService calculationService;
 
   @Test
   public void costPavedLandDumpTruckTest() {
-    String expected = "62,70";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", 100, 0, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLand,
+        kmByUnpavedLandZero, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("62.70");
   }
 
   @Test
   public void costPavedLandBoxTruckTest() {
-    String expected = "60,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", 100, 0, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", kmByPavedLand,
+        kmByUnpavedLandZero, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("60.00");
   }
 
   @Test
   public void costPavedLandTractorTruckTest() {
-    String expected = "66,48";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", 100, 0, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLand,
+        kmByUnpavedLandZero, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("66.48");
   }
 
   @Test
   public void costUnpavedLandDumpTruckTest() {
-    String expected = "71,10";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", 0, 100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLandZero,
+        kmByUnpavedLand, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("71.10");
   }
 
   @Test
   public void costUnpavedLandBoxTruckTest() {
-    String expected = "68,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", 0, 100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", kmByPavedLandZero,
+        kmByUnpavedLand, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("68.00");
   }
 
   @Test
   public void costUnpavedLandTractorTruckTest() {
-    String expected = "75,44";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", 0, 100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLandZero,
+        kmByUnpavedLand, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("75.44");
   }
 
   @Test
   public void costPavedAndUnpavedLandDumpTruckTest() {
-    String expected = "133,80";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", 100, 100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLand,
+        kmByUnpavedLand, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("133.80");
   }
 
   @Test
   public void costPavedAndUnpavedLandBoxTruckTest() {
-    String expected = "128,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", 100, 100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", kmByPavedLand,
+        kmByUnpavedLand, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("128.00");
   }
 
   @Test
   public void costPavedAndUnpavedLandTractorTruckTest() {
-    String expected = "141,92";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", 100, 100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLand,
+        kmByUnpavedLand, weightCargo);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("141.92");
   }
 
   @Test
   public void costPavedAndUnpavedLandDumpTruckZeroWeightTest() {
-    String expected = "121,80";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", 100, 100, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLand,
+        kmByUnpavedLandZero, weightCargoZero);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("56.70");
   }
 
   @Test
   public void costPavedAndUnpavedLandDumpTruckNegativeWeightTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", 100, 100, -8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeWeightCargoException thrown = assertThrows(NegativeWeightCargoException.class,
+        () -> calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLand,
+            kmByUnpavedLandNegative, weightCargoNegative),
+        "Expected calculateTotalCost to throw, weight cargo is negative");
+    assertThat(thrown.getMessage(), equalTo("The weight of the cargo cannot be negative."));
   }
 
   @Test
   public void costPavedAndUnpavedLandBoxTruckZeroWeightTest() {
-    String expected = "116,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", 100, 100, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", kmByPavedLand,
+        kmByUnpavedLandZero, weightCargoZero);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("54.00");
   }
 
   @Test
   public void costPavedAndUnpavedLandBoxTruckNegativeWeightTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", 100, 100, -8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeWeightCargoException thrown = assertThrows(NegativeWeightCargoException.class,
+        () -> calculationService.calculateCost("TRUCK", "BOX", kmByPavedLand,
+            kmByUnpavedLandNegative, weightCargoNegative),
+        "Expected calculateTotalCost to throw, weight cargo is negative");
+    assertThat(thrown.getMessage(), equalTo("The weight of the cargo cannot be negative."));
   }
 
   @Test
   public void costPavedAndUnpavedLandTractorTruckZeroWeightTest() {
-    String expected = "129,92";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", 100, 100, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLand,
+        kmByUnpavedLandZero, weightCargoZero);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("60.48");
   }
 
   @Test
   public void costPavedAndUnpavedLandTractorTruckNegativeWeightTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", 100, 100, -8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeWeightCargoException thrown = assertThrows(NegativeWeightCargoException.class,
+        () -> calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLand,
+            kmByUnpavedLandNegative, weightCargoNegative),
+        "Expected calculateTotalCost to throw, weight cargo is negative");
+    assertThat(thrown.getMessage(), equalTo("The weight of the cargo cannot be negative."));
   }
 
   @Test
   public void costPavedLandDumpTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", -100, 0, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLandNegative,
+            kmByUnpavedLandZero, weightCargoZero),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costPavedLandBoxTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", -100, 0, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "BOX", kmByPavedLandNegative,
+            kmByUnpavedLandZero, weightCargoZero),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costPavedLandTractorTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", -100, 0, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLandNegative,
+            kmByUnpavedLandZero, weightCargoZero),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costUnpavedLandDumpTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", 0, -100, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLandZero,
+            kmByUnpavedLandNegative, weightCargoZero),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costUnpavedLandBoxTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", 0, -100, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "BOX", kmByPavedLandZero,
+            kmByUnpavedLandNegative, weightCargoZero),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costUnpavedLandTractorTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", 0, -100, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLandZero,
+            kmByUnpavedLandNegative, weightCargoZero),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costPavedAndUnpavedLandDumpTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", -100, -100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLandNegative,
+            kmByUnpavedLandNegative, weightCargo),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costPavedAndUnpavedLandBoxTruckNegativeKmTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", -100, -100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "BOX", kmByPavedLandNegative,
+            kmByUnpavedLandNegative, weightCargo),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costPavedAndUnpavedLandTractorTruckNegativeKmtTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", -100, -100, 8);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    NegativeKmException thrown = assertThrows(NegativeKmException.class,
+        () -> calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLandNegative,
+            kmByUnpavedLandNegative, weightCargo),
+        "Expected calculateTotalCost to throw, km negative");
+    assertThat(thrown.getMessage(), equalTo("Mileage cannot be a negative."));
   }
 
   @Test
   public void costPavedAndUnpavedLandDumpTruckZeroKmAndWeightTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", 0, 0, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "DUMP", kmByPavedLandZero,
+        kmByUnpavedLandZero, weightCargoZero);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("0.00");
   }
 
   @Test
   public void costPavedAndUnpavedLandBoxTruckZeroKmAndWeightTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", 0, 0, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "BOX", kmByPavedLandZero,
+        kmByUnpavedLandZero, weightCargoZero);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("0.00");
   }
 
   @Test
   public void costPavedAndUnpavedLandTractorTruckZeroKmAndWeightTest() {
-    String expected = "0,00";
-    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", 0, 0, 0);
-    assertThat(expected).isEqualTo(transportTotalCost.getTotalCost());
+    TransportTotalCost transportTotalCost = calculationService.calculateCost("TRUCK", "TRACTOR", kmByPavedLandZero,
+        kmByUnpavedLandZero, weightCargoZero);
+    String result = transportTotalCost.getTotalCost();
+    assertThat(result).isEqualTo("0.00");
   }
 
 }
