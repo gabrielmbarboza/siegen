@@ -1,8 +1,5 @@
 package com.gabrielmbarboza.sienge.model;
 
-import com.gabrielmbarboza.sienge.exception.NegativeKmException;
-import com.gabrielmbarboza.sienge.exception.NegativeWeightCargoException;
-
 class Land implements Transport {
   private String type;
 
@@ -11,15 +8,10 @@ class Land implements Transport {
   }
 
   @Override
-  public Double calculateTotalCost(Vehicle vehicle, int kmTraveled, int weightCargo) {
+  public Double calculateTotalCost(Vehicle vehicle, Double kmTraveled, Double weightCargo) {
     Double totalCost = 0.0d;
-
-    try {
-      totalCost = LandType.valueOf(this.type).getTransportCalculation().calculateTotalCost(vehicle, kmTraveled,
-          weightCargo);
-    } catch (NegativeKmException | NegativeWeightCargoException e) {
-      System.out.println(e.getMessage());
-    }
+    totalCost = LandType.valueOf(this.type).getTransportCalculation().calculateTotalCost(vehicle, kmTraveled,
+        weightCargo);
 
     return totalCost;
   }

@@ -17,6 +17,6 @@ public enum TruckType {
     }
 
     public TruckCalculation getTruckCalculation() {
-        return truckCalculation;
+        return this.truckCalculation;
     }
 }
