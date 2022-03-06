@@ -1,16 +1,13 @@
 package com.gabrielmbarboza.sienge.rules;
 
-import com.gabrielmbarboza.sienge.exception.NegativeKmException;
-import com.gabrielmbarboza.sienge.exception.NegativeWeightCargoException;
 import com.gabrielmbarboza.sienge.model.Vehicle;
 
 public interface TransportCalculation {
-    Double calculateTotalCost(Vehicle vehicle, int kmTraveled, int weightCargo)
-            throws NegativeKmException, NegativeWeightCargoException;
+    Double calculateTotalCost(Vehicle vehicle, Double kmTraveled, Double weightCargo);
 
-    Double calculateCostKmTraveled(int kmTraveled) throws NegativeKmException;
+    Double calculateCostKmTraveled(Double kmTraveled);
 
-    Double calculateExcessWeight(int kmTraveled, int weightCargo) throws NegativeWeightCargoException;
+    Double calculateExcessWeight(Double kmTraveled, Double weightCargo);
 
-    Boolean isExcessWeight(int weightCargo);
+    Boolean isExcessWeight(Double weightCargo);
 }
